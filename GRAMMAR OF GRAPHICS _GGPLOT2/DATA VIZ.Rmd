@@ -1,0 +1,118 @@
+---
+title: "DATA VISUALIZATION"
+author: "Guru Puvati"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+ message = FALSE,
+ warning = FALSE,
+ echo = TRUE)
+```
+
+```{r , echo = TRUE}
+library(sjPlot)
+library(gtsummary)
+library(tidyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+## [Data Visualization](https://github.com/LangatErick "Github")
+
+1.  *Data*
+
+2.  mappings (aesthetics)
+
+3.  geometrics
+
+4.  *Statistics*
+
+5.  *Facet*
+
+6.  *Coordinates Space*
+
+7.  *Labels (ggtitle)*
+
+8.  *Theme*
+
+    ```{r}
+    BOD
+    ```
+
+    ```{r}
+    ggplot(data = BOD, 
+           mapping = aes(x=Time,
+                         y=demand)) +
+     geom_point(size=3)+
+     geom_line(color='orange')
+    ```
+
+    ```{r}
+    ggplot( BOD,  aes(Time,demand )) +
+                  geom_point(size=3)+
+                  geom_line(color='red')
+    ```
+
+    #### LET'S TRY USING DIFFERENT DATASETS (CO2)
+
+    ```{r}
+    nrow(CO2)#NO.Rows
+    head(CO2)
+    ```
+
+    ```{r}
+    names(CO2)
+    ```
+
+    ```{r}
+    CO2 %>% 
+        ggplot(aes(conc, uptake,
+                   colour=Treatment)) +
+        geom_point(alpha=1, size=2) +
+        geom_smooth(method = 'lm', se=FALSE)+
+        facet_wrap(~Type) +
+        ggtitle("CO2 CONCENTRATION")+ 
+     #same as labs(Title="CO2 CONCENTRATION")
+        theme_bw()
+    ```
+
+    #### 
+
+    ```{r}
+    CO2 %>%  
+           ggplot(aes(Treatment, uptake)) +
+           geom_boxplot() +
+           geom_point(aes(colour=Plant,
+                          alpha=0.5,
+                          size=conc)) +
+     facet_wrap(~Type)+
+     coord_flip()+
+     theme_minimal()+
+     labs(title = "Quebecv/s Mississipi")
+    ```
+
+    #### LETS TRY OUT WITH ANOTHER DATASETS(mpg)
+
+    ```{r}
+    head(mpg)
+    ```
+
+    ```{r}
+    mpg %>%
+     filter(cty<25) %>% 
+     ggplot(aes(displ, cty)) +
+            geom_point(aes(colour=drv,
+                           size=trans), 
+                       alpha=0.5) +
+         geom_smooth(method=lm) +
+          facet_wrap(~year, nrow = 1) +
+          labs(x="Engine Size",
+               y="mpg in the cty",
+               title = "fuel efficiency") +
+            theme_minimal()
+    ```
